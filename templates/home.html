@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
+    <title>STATUS</title>
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+form {border: 3px solid #f1f1f1;}
+
+
+input[type=text]{
+  width: 60%;
+  padding: 10px 15px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 10%;
+}
+button:hover {
+  opacity: 0.8;
+}
+</style>
+</head>
+<body>
+
+<form id="theForm" method="get">
+  {% csrf_token %}
+
+  <div class="container">
+    <label for="nam"><b>NAME</b></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="text" placeholder="Enter Name" name="nam" required style="width:350px;"><br>
+
+    <label for="shp"><b>SHOP NAME</b></label>
+    <input type="text" placeholder="Enter Shop_name" name="shp" required style="width:350px;"><br>
+
+      <label for="sts"><b>STATUS</b></label>
+    <input type="text" placeholder="Enter Shop_name" name="sts" required style="width:350px;"><br>
+
+    <button type="submit"  style="margin-left:200px;">Submit</button><br>
+
+<div>
+    <div id="div3"></div>
+
+
+<table id="tb2" class="table table-hover" Style="width:100%;">
+<thead style="background-color:#d9d9d9">
+<tr style="font-size:13px;">
+<th>Name</th>
+<th>Shop_name</th>
+<th>Status</th>
+<th>Date</th>
+
+</tr>
+</thead>
+
+</table>
+
+</div>
+  </div>
+
+</form>
+<!--<script>-->
+ <!--$.getJSON('',-->
+    <!--function (json) {-->
+        <!--var tr;-->
+        <!--for (var i = 0; i < json.length; i++) {-->
+            <!--tr = $('<tr/>');-->
+            <!--tr.append("<td>" + json[i].Bus_Number + "</td>");-->
+            <!--tr.append("<td>" + json[i].Distance + "</td>");-->
+            <!--tr.append("<td>" + json[i].Duration + "</td>");-->
+            <!--tr.append("<td>" + json[i].Departure_Time + "</td>");-->
+			<!--tr.append("<td>" + json[i].Arrival_Time + "</td>");-->
+			<!--tr.append("<td>" + json[i].Number_of_Stops + "</td>");-->
+            <!--$('#tb2').append(tr);-->
+        <!--}-->
+    <!--});-->
+<!--</script>-->
+<script>
+
+var frm = $('#theForm');
+    frm.submit(function () {
+        var tr;
+        $.ajax({
+            type: "GET",
+            url: '/ajax',
+            data: frm.serialize(),
+            success: function (data) {
+                tr = $('<tr/>');
+                tr.append("<td>" + data.bus_number + "</td>");
+                tr.append("<td>" + data.distance + "</td>");
+                tr.append("<td>" + data.duration + "</td>");
+                tr.append("<td>" + data.departure_time + "</td>");
+			    tr.append("<td>" + data.arrival_time + "</td>");
+			    tr.append("<td>" + data.number_of_stops + "</td>");
+            $('#tb2').append(tr);
+            },
+            error: function(data) {
+                $("#div3").html("Something went wrong!");
+            }
+        });
+        return false;
+    });
+
+
+</script>
+</body>
+</html>
